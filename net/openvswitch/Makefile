@@ -15,16 +15,19 @@ include $(INCLUDE_DIR)/kernel.mk
 #  - Check and update kmod dependencies when necessary (runtime module load check in the least)
 #
 PKG_NAME:=openvswitch
-PKG_VERSION:=2.10.0
+PKG_VERSION:=2.09.0-nxp
 PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://www.openvswitch.org/releases/
-PKG_HASH:=64f7cdcfffc73b2e09980d04ee22731eadd6453698b92d7397c9e45c7c174050
+#PKG_SOURCE_URL:=https://www.openvswitch.org/releases/
+#PKG_HASH:=64f7cdcfffc73b2e09980d04ee22731eadd6453698b92d7397c9e45c7c174050
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://source.codeaurora.org/external/qoriq/qoriq-components/ovs-dpdk
+PKG_SOURCE_VERSION:=24eec4133f03b0a5a8f903577bc87603577150c0
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
 
-PKG_BUILD_DEPENDS:=python/host python-six/host
+PKG_BUILD_DEPENDS:=python/host python-six/host +TARGET_layerscape:dpdk
 PKG_USE_MIPS16:=0
 PKG_BUILD_PARALLEL:=1
 PKG_FIXUP:=autoreconf
@@ -144,7 +147,7 @@ define OvsPackageTemplate
      URL:=https://www.openvswitch.org
      TITLE:=$(ovs_$(1)_title)
      HIDDEN:=$(ovs_$(1)_hidden)
-     DEPENDS:=$(ovs_$(1)_depends) +libunbound
+     DEPENDS:=$(ovs_$(1)_depends) +libunbound +TARGET_layerscape:dpdk
   endef
 
   define Package/$(call ovs_package_name,$(1))/install
@@ -212,7 +215,6 @@ ovs_common_depends:=+librt +openvswitch-libopenvswitch +openvswitch-libofproto +
 ovs_common_files:= \
 	usr/share/openvswitch/scripts/ovs-lib \
 	usr/share/openvswitch/scripts/ovs-ctl \
-	usr/share/openvswitch/scripts/ovs-kmod-ctl \
 	usr/share/openvswitch/scripts/ovs-save \
 	$(foreach b,ovs-appctl ovs-dpctl ovs-ofctl ovs-vsctl ovsdb-client ovsdb-tool,usr/bin/$(b))
 define ovs_common_install
@@ -287,6 +289,7 @@ CONFIGURE_ARGS+= \
 	--enable-ndebug \
 	--enable-shared \
 	--disable-libcapng \
+	--with-dpdk=$(STAGING_DIR)
 
 CONFIGURE_VARS += \
 	ovs_cv_flake8=no \

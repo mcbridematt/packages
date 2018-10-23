@@ -12,10 +12,10 @@ Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
  m4/openvswitch.m4 | 2 ++
  2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile.am b/Makefile.am
-index 788972804..cd90cc176 100644
---- a/Makefile.am
-+++ b/Makefile.am
+Index: openvswitch-2.09.0-nxp/Makefile.am
+===================================================================
+--- openvswitch-2.09.0-nxp.orig/Makefile.am
++++ openvswitch-2.09.0-nxp/Makefile.am
 @@ -60,7 +60,7 @@ endif
  # foo/__init__.pyc will cause Python to ignore foo.py.
  run_python = \
@@ -25,17 +25,20 @@ index 788972804..cd90cc176 100644
  
  ALL_LOCAL =
  BUILT_SOURCES =
-diff --git a/m4/openvswitch.m4 b/m4/openvswitch.m4
-index 5743f83ce..acb6b140e 100644
---- a/m4/openvswitch.m4
-+++ b/m4/openvswitch.m4
-@@ -449,7 +449,9 @@ AC_DEFUN([OVS_CHECK_PYTHON],
-       fi])
-     AC_SUBST([PYTHON])
-     PYTHON=$ovs_cv_python
-+    PYTHON_HOST=$ovs_cv_python_host
-     AC_SUBST([HAVE_PYTHON])
-+    AM_MISSING_PROG([PYTHON_HOST], [python])
-     HAVE_PYTHON=yes
-     AM_CONDITIONAL([HAVE_PYTHON], [test "$HAVE_PYTHON" = yes])])
+Index: openvswitch-2.09.0-nxp/m4/openvswitch.m4
+===================================================================
+--- openvswitch-2.09.0-nxp.orig/m4/openvswitch.m4
++++ openvswitch-2.09.0-nxp/m4/openvswitch.m4
+@@ -353,10 +353,12 @@ else:
+    fi
+    AM_MISSING_PROG([PYTHON], [python])
+    PYTHON=$ovs_cv_python
++   PYTHON_HOST=$ovs_cv_python_host
+ 
+    # HAVE_PYTHON is always true.  (Python has not always been a build
+    # requirement, so this variable is now obsolete.)
+    AC_SUBST([HAVE_PYTHON])
++   AM_MISSING_PROG([PYTHON_HOST], [python])
+    HAVE_PYTHON=yes
+    AM_CONDITIONAL([HAVE_PYTHON], [test "$HAVE_PYTHON" = yes])
  
