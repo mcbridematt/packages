@@ -122,6 +122,10 @@ else
 CONFIGURE_ARGS+=--disable-editline --disable-readline
 endif
 
+ifneq ($(CONFIG_USE_GLIBC),)
+	CONFIGURE_VARS += LIBS='-lpthread'
+endif
+
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
