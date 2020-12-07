@@ -64,7 +64,7 @@ define Build/Prepare
 	# Verify dependencies are the vendored version
 	$(call EnsureVendoredVersion,../containerd/Makefile,containerd.installer)
 	$(call EnsureVendoredVersion,../libnetwork/Makefile,proxy.installer)
-	$(call EnsureVendoredVersion,../runc/Makefile,runc.installer)
+#	$(call EnsureVendoredVersion,../runc/Makefile,runc.installer)
 	$(call EnsureVendoredVersion,../tini/Makefile,tini.installer)
 endef
 
